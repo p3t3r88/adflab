@@ -4,7 +4,7 @@
 		"description": "Lab# 4 of adflab",
 		"activities": [
 			{
-				"name": "Copy_uaj",
+				"name": "Weather_HTTP_to_ADLS",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
