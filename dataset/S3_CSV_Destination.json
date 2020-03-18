@@ -1,0 +1,24 @@
+{
+	"name": "S3_CSV_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PT_ADLS_LabEnv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "billings.csv",
+				"fileSystem": "s3data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
