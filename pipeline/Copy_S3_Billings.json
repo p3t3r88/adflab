@@ -1,0 +1,353 @@
+{
+	"name": "Copy_S3_Billings",
+	"properties": {
+		"description": "Copy S3 Bucket data for Crayon's AWS customers",
+		"activities": [
+			{
+				"name": "Copy_S3Data",
+				"description": "Test to copy data from S3 to Blob",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "crayon-vy-prod-bucket/cloudiq/cost-and-usage-report-daily-cloudiq/20200201-20200301/023f8f94-b2de-4ec1-b569-b773b2eae5cc/cost-and-usage-report-daily-cloudiq-1.csv.zip"
+					},
+					{
+						"name": "Destination",
+						"value": "s3_data//vy_276520083766.csv"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AmazonS3ReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"redirectIncompatibleRowSettings": {
+						"linkedServiceName": {
+							"referenceName": "PT_BLOB_LabEnv",
+							"type": "LinkedServiceReference"
+						},
+						"path": "s3-error"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "identity/LineItemId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "identity/LineItemId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "identity/TimeInterval",
+									"type": "String"
+								},
+								"sink": {
+									"name": "identity/TimeInterval",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "bill/InvoiceId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "bill/InvoiceId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "bill/BillingEntity",
+									"type": "String"
+								},
+								"sink": {
+									"name": "bill/BillingEntity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "bill/BillType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "bill/BillType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "bill/PayerAccountId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "bill/PayerAccountId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "bill/BillingPeriodStartDate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "bill/BillingPeriodStartDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "bill/BillingPeriodEndDate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "bill/BillingPeriodEndDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/UsageAccountId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/UsageAccountId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/LineItemType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/LineItemType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/UsageStartDate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/UsageStartDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/UsageEndDate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/UsageEndDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/ProductCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/ProductCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/UsageType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/UsageType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/Operation",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/Operation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/AvailabilityZone",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/AvailabilityZone",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/ResourceId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/ResourceId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/UsageAmount",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/UsageAmount",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/NormalizationFactor",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/NormalizationFactor",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/NormalizedUsageAmount",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/NormalizedUsageAmount",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/CurrencyCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/CurrencyCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/UnblendedRate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/UnblendedRate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/UnblendedCost",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/UnblendedCost",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/BlendedRate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/BlendedRate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/BlendedCost",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/BlendedCost",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/LineItemDescription",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/LineItemDescription",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lineItem/TaxType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "lineItem/TaxType",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "S3_CSV_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "S3_CSV_Destination",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,7 @@
+{
+	"name": "PTSQLSVR",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Localhost SQL Developer in my laptop"
+	}
+}

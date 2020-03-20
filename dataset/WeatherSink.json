@@ -1,0 +1,23 @@
+{
+	"name": "WeatherSink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PT_ADLS_LabEnv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "201612-WeatherData.txt",
+				"fileSystem": "input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
