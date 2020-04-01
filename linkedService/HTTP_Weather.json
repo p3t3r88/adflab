@@ -1,5 +1,6 @@
 {
 	"name": "HTTP_Weather",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "HttpServer",
