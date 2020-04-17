@@ -22,7 +22,7 @@
 					"sink": {
 						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
+							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
@@ -34,13 +34,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SQL_Customers",
+						"referenceName": "SQL_Employees",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ADLS_Customers_Sink",
+						"referenceName": "Blob_Employees_Sink",
 						"type": "DatasetReference"
 					}
 				]
