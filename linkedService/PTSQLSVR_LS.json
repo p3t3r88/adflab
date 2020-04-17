@@ -1,0 +1,18 @@
+{
+	"name": "PTSQLSVR_LS",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "My on-prem SQL Server",
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=NOOSLBBP73M2\\PTSQLSVR;initial catalog=AdventureWorksDW2016",
+			"userName": "crayon\\pettham",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmMGY1NWY4MS1hZjk0LTQxZjctOGU5Ni00MTZmMTJhZjFkMjYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "PTSQLSVR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
