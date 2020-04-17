@@ -1,0 +1,20 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ADLS_Customers_Sink",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(output(\n\t\tCustomerKey as short,\n\t\tGeographyKey as short,\n\t\tCustomerAlternateKey as string,\n\t\tTitle as string,\n\t\tFirstName as string,\n\t\tMiddleName as string,\n\t\tLastName as string,\n\t\tNameStyle as boolean,\n\t\tBirthDate as string,\n\t\tMaritalStatus as string,\n\t\tSuffix as string,\n\t\tGender as string,\n\t\tEmailAddress as string,\n\t\tYearlyIncome as double,\n\t\tTotalChildren as short,\n\t\tNumberChildrenAtHome as short,\n\t\tEnglishEducation as string,\n\t\tSpanishEducation as string,\n\t\tFrenchEducation as string,\n\t\tEnglishOccupation as string,\n\t\tSpanishOccupation as string,\n\t\tFrenchOccupation as string,\n\t\tHouseOwnerFlag as boolean,\n\t\tNumberCarsOwned as short,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tPhone as string,\n\t\tDateFirstPurchase as string,\n\t\tCommuteDistance as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> source1"
+		}
+	}
+}
