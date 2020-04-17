@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "customers",
-				"fileSystem": "test2"
+				"fileSystem": "adventureworks"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
