@@ -1,0 +1,12 @@
+{
+	"name": "azSQL_Customers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AZ_SQLdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
