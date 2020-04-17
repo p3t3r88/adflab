@@ -1,0 +1,23 @@
+{
+	"name": "Blob_Employees_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PT_BLOB_LabEnv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "employees",
+				"container": "adventureworks"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
