@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "PT-DataFactoryLab"
+		},
+		"AWS_S3_Link_secretAccessKey": {
+			"value": ""
+		},
+		"PT_ADLS_LabEnv_accountKey": {
+			"value": ""
+		},
+		"PT_BLOB_LabEnv_connectionString": {
+			"value": ""
+		},
+		"AWS_S3_Link_properties_typeProperties_accessKeyId": {
+			"value": "AKIAUAYPBUE3M75OUDNN"
+		},
+		"HTTP_Weather_properties_typeProperties_url": {
+			"value": "https://weather-b362.restdb.io/rest/random-weather-dec-2016"
+		},
+		"Lego_RebrickableURL_properties_typeProperties_url": {
+			"value": "http://cdn.rebrickable.com/media/downloads/"
+		},
+		"PT_ADLS_LabEnv_properties_typeProperties_url": {
+			"value": "https://ptadfdatalake.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

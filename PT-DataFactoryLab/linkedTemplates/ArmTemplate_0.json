@@ -1,0 +1,957 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "PT-DataFactoryLab"
+		},
+		"AWS_S3_Link_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'AWS_S3_Link'"
+		},
+		"PT_ADLS_LabEnv_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'PT_ADLS_LabEnv'"
+		},
+		"PT_BLOB_LabEnv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'PT_BLOB_LabEnv'"
+		},
+		"AWS_S3_Link_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "AKIAUAYPBUE3M75OUDNN"
+		},
+		"HTTP_Weather_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://weather-b362.restdb.io/rest/random-weather-dec-2016"
+		},
+		"Lego_RebrickableURL_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://cdn.rebrickable.com/media/downloads/"
+		},
+		"PT_ADLS_LabEnv_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://ptadfdatalake.dfs.core.windows.net"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "vFiles",
+							"value": [
+								"colors",
+								"inventories",
+								"inventory_parts",
+								"part_categories",
+								"parts",
+								"sets",
+								"themes"
+							]
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@pipeline().parameters.vLoadAllFiles",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Append variable1",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "vFiles",
+										"value": "inventory_sets"
+									}
+								},
+								{
+									"name": "Append variable2",
+									"description": "",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "vFiles",
+										"value": "part_relationships"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "If Condition1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "vListOfFiles",
+							"value": {
+								"value": "load @{length(variables('vFiles'))} files: @{join(variables('vFiles'),' ,')}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"vLoadAllFiles": {
+						"type": "bool"
+					}
+				},
+				"variables": {
+					"vFiles": {
+						"type": "Array"
+					},
+					"vListOfFiles": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AWS_S3_Link')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Linked Service to connect to Amazon S3",
+				"annotations": [],
+				"type": "AmazonS3",
+				"typeProperties": {
+					"serviceUrl": "",
+					"accessKeyId": "[parameters('AWS_S3_Link_properties_typeProperties_accessKeyId')]",
+					"secretAccessKey": {
+						"type": "SecureString",
+						"value": "[parameters('AWS_S3_Link_secretAccessKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HTTP_Weather')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('HTTP_Weather_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Lego_RebrickableURL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('Lego_RebrickableURL_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PT_ADLS_LabEnv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connection to PT Data Lakes Lab Env",
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('PT_ADLS_LabEnv_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('PT_ADLS_LabEnv_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PT_BLOB_LabEnv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connection to Blob Storage in Lab Env",
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('PT_BLOB_LabEnv_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PTSQLSVR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"description": "Localhost SQL Developer in my laptop",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADLS_Lego_Themes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "PT_ADLS_LabEnv",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "themes.csv",
+						"fileSystem": "lego"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/PT_ADLS_LabEnv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HTTP_Lego_Themes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Lego_RebrickableURL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "themes.csv.gz"
+					},
+					"columnDelimiter": ",",
+					"rowDelimiter": "\n",
+					"compressionCodec": "gzip",
+					"compressionLevel": "Optimal",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "parent_id",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Lego_RebrickableURL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S3_CSV_Destination')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "PT_ADLS_LabEnv",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "billings.csv",
+						"fileSystem": "s3data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/PT_ADLS_LabEnv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S3_CSV_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AWS_S3_Link",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AmazonS3Location",
+						"bucketName": "crayon-vy-prod-bucket",
+						"folderPath": "cloudiq/cost-and-usage-report-daily-cloudiq/20200201-20200301/023f8f94-b2de-4ec1-b569-b773b2eae5cc",
+						"fileName": "cost-and-usage-report-daily-cloudiq-1.csv.zip"
+					},
+					"columnDelimiter": ",",
+					"compressionCodec": "ZipDeflate",
+					"compressionLevel": "Optimal",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AWS_S3_Link')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WeatherSink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "PT_ADLS_LabEnv",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "201612-WeatherData.txt",
+						"fileSystem": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/PT_ADLS_LabEnv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WeatherSource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HTTP_Weather",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HTTP_Weather')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Copy_S3_Billings')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy S3 Bucket data for Crayon's AWS customers",
+				"activities": [
+					{
+						"name": "Copy_S3Data",
+						"description": "Test to copy data from S3 to Blob",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "crayon-vy-prod-bucket/cloudiq/cost-and-usage-report-daily-cloudiq/20200201-20200301/023f8f94-b2de-4ec1-b569-b773b2eae5cc/cost-and-usage-report-daily-cloudiq-1.csv.zip"
+							},
+							{
+								"name": "Destination",
+								"value": "s3_data//vy_276520083766.csv"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AmazonS3ReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"redirectIncompatibleRowSettings": {
+								"linkedServiceName": {
+									"referenceName": "PT_BLOB_LabEnv",
+									"type": "LinkedServiceReference"
+								},
+								"path": "s3-error"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "identity/LineItemId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "identity/LineItemId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "identity/TimeInterval",
+											"type": "String"
+										},
+										"sink": {
+											"name": "identity/TimeInterval",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "bill/InvoiceId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "bill/InvoiceId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "bill/BillingEntity",
+											"type": "String"
+										},
+										"sink": {
+											"name": "bill/BillingEntity",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "bill/BillType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "bill/BillType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "bill/PayerAccountId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "bill/PayerAccountId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "bill/BillingPeriodStartDate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "bill/BillingPeriodStartDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "bill/BillingPeriodEndDate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "bill/BillingPeriodEndDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/UsageAccountId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/UsageAccountId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/LineItemType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/LineItemType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/UsageStartDate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/UsageStartDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/UsageEndDate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/UsageEndDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/ProductCode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/ProductCode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/UsageType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/UsageType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/Operation",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/Operation",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/AvailabilityZone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/AvailabilityZone",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/ResourceId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/ResourceId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/UsageAmount",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/UsageAmount",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/NormalizationFactor",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/NormalizationFactor",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/NormalizedUsageAmount",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/NormalizedUsageAmount",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/CurrencyCode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/CurrencyCode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/UnblendedRate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/UnblendedRate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/UnblendedCost",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/UnblendedCost",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/BlendedRate",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/BlendedRate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/BlendedCost",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/BlendedCost",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/LineItemDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/LineItemDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "lineItem/TaxType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lineItem/TaxType",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S3_CSV_Source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S3_CSV_Destination",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/S3_CSV_Source')]",
+				"[concat(variables('factoryId'), '/datasets/S3_CSV_Destination')]",
+				"[concat(variables('factoryId'), '/linkedServices/PT_BLOB_LabEnv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Lego_HTTP_to_ADLS_Themes')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy Lego data from Rebrickable URL to ADF",
+				"activities": [
+					{
+						"name": "Copy_s64",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "themes.csv.gz"
+							},
+							{
+								"name": "Destination",
+								"value": "lego//themes.csv"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings",
+									"skipLineCount": 0
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"redirectIncompatibleRowSettings": {
+								"linkedServiceName": {
+									"referenceName": "PT_BLOB_LabEnv",
+									"type": "LinkedServiceReference"
+								},
+								"path": "lego/errors/themes"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "HTTP_Lego_Themes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ADLS_Lego_Themes",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/HTTP_Lego_Themes')]",
+				"[concat(variables('factoryId'), '/datasets/ADLS_Lego_Themes')]",
+				"[concat(variables('factoryId'), '/linkedServices/PT_BLOB_LabEnv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Weather to Blob Copy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Lab# 4 of adflab",
+				"activities": [
+					{
+						"name": "Weather_HTTP_to_ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Destination",
+								"value": "input//201612-WeatherData.txt"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET",
+									"additionalHeaders": "x-apikey: 5a31643dcb25c1076c7cd9ab\nContent-Type: application/json"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"redirectIncompatibleRowSettings": {
+								"linkedServiceName": {
+									"referenceName": "PT_BLOB_LabEnv",
+									"type": "LinkedServiceReference"
+								},
+								"path": "errorlog"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$"
+										},
+										"sink": {
+											"name": "schema"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "WeatherSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "WeatherSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/WeatherSource')]",
+				"[concat(variables('factoryId'), '/datasets/WeatherSink')]",
+				"[concat(variables('factoryId'), '/linkedServices/PT_BLOB_LabEnv')]"
+			]
+		}
+	]
+}
