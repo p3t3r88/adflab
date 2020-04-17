@@ -1,0 +1,141 @@
+{
+	"name": "Test_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SQL_AdventureWorksDW2016_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "EmployeeKey",
+				"type": "int"
+			},
+			{
+				"name": "ParentEmployeeKey",
+				"type": "int"
+			},
+			{
+				"name": "EmployeeNationalIDAlternateKey",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ParentEmployeeNationalIDAlternateKey",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesTerritoryKey",
+				"type": "int"
+			},
+			{
+				"name": "FirstName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LastName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MiddleName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "NameStyle",
+				"type": "bit"
+			},
+			{
+				"name": "Title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "HireDate",
+				"type": "date"
+			},
+			{
+				"name": "BirthDate",
+				"type": "date"
+			},
+			{
+				"name": "LoginID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmailAddress",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Phone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MaritalStatus",
+				"type": "nchar"
+			},
+			{
+				"name": "EmergencyContactName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmergencyContactPhone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalariedFlag",
+				"type": "bit"
+			},
+			{
+				"name": "Gender",
+				"type": "nchar"
+			},
+			{
+				"name": "PayFrequency",
+				"type": "tinyint"
+			},
+			{
+				"name": "BaseRate",
+				"type": "money"
+			},
+			{
+				"name": "VacationHours",
+				"type": "smallint"
+			},
+			{
+				"name": "SickLeaveHours",
+				"type": "smallint"
+			},
+			{
+				"name": "CurrentFlag",
+				"type": "bit"
+			},
+			{
+				"name": "SalesPersonFlag",
+				"type": "bit"
+			},
+			{
+				"name": "DepartmentName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StartDate",
+				"type": "date"
+			},
+			{
+				"name": "EndDate",
+				"type": "date"
+			},
+			{
+				"name": "Status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmployeePhoto",
+				"type": "varbinary"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimEmployee"
+		}
+	}
+}
