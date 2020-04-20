@@ -1,5 +1,5 @@
 {
-	"name": "azSQL_Customers",
+	"name": "azSQL_Employees",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AZ_SQLdb",
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "DimCustomers"
+			"table": "DimEmployees"
 		}
 	}
 }
