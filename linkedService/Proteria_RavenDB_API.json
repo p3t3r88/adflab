@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "http://localhost:50000/databases/ProTeria.Invoicing/docs?collection=Orders",
+			"url": "http://localhost:50000/",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		},
