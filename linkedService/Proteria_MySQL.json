@@ -1,0 +1,16 @@
+{
+	"name": "Proteria_MySQL",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "MySql",
+		"typeProperties": {
+			"connectionString": "server=127.0.0.1;port=53306;database=procom;user=crayon;sslmode=1;usesystemtruststore=0",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiYTgwZjFlOS0xYjE0LTQxNmMtYTlmZi1hZWU1ZWM1ZWMyYTMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "PTSQLSVR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
