@@ -1,0 +1,16 @@
+{
+	"name": "Proteria_RavenDB_API",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "localhost:50000",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		},
+		"connectVia": {
+			"referenceName": "PTSQLSVR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
