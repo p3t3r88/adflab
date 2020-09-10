@@ -1,0 +1,12 @@
+{
+	"name": "Proteria_RavenDB_API",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Proteria_RavenDB_API",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
