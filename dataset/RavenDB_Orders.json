@@ -1,0 +1,12 @@
+{
+	"name": "RavenDB_Orders",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AZ_SQLdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
