@@ -1,7 +1,0 @@
-{
-	"name": "LocalIntergrationRuntime",
-	"properties": {
-		"type": "SelfHosted",
-		"description": "Connecting to local machines and resources"
-	}
-}
