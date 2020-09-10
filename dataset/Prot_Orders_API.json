@@ -1,0 +1,134 @@
+{
+	"name": "Prot_Orders_API",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Proteria_RavenDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"$id": {
+					"type": "string"
+				},
+				"cachedHashcode": {
+					"type": "null"
+				},
+				"TimeStamp": {
+					"type": "string"
+				},
+				"Type": {
+					"type": "string"
+				},
+				"Description": {
+					"type": "string"
+				},
+				"Change": {
+					"type": "number"
+				},
+				"Amount": {
+					"type": "number"
+				},
+				"AmountWithoutVAT": {
+					"type": "number"
+				},
+				"ListPriceWithoutVAT": {
+					"type": "number"
+				},
+				"Discount": {
+					"type": "number"
+				},
+				"DiscountPercentage": {
+					"type": "number"
+				},
+				"DicountPercentageAtCarrier": {
+					"type": "number"
+				},
+				"DiscountedNetAmountAtCarrier": {
+					"type": "number"
+				},
+				"ThirdPartyRef": {
+					"type": "string"
+				},
+				"ThirdPartyRef2": {
+					"type": "string"
+				},
+				"CurrencyCode": {
+					"type": "string"
+				},
+				"ArticleNumber": {
+					"type": "string"
+				},
+				"ProductCode": {
+					"type": "string"
+				},
+				"ThirdPartyRegTime": {
+					"type": "string"
+				},
+				"ProTeriaCustomerId": {
+					"type": "integer"
+				},
+				"ThirdPartyInvoiceNo": {
+					"type": "string"
+				},
+				"PartnerAmount": {
+					"type": "number"
+				},
+				"PartnerAmountWithoutVAT": {
+					"type": "number"
+				},
+				"UsingCalcPrice": {
+					"type": "boolean"
+				},
+				"OurId": {
+					"type": "string"
+				},
+				"OurId2": {
+					"type": "string"
+				},
+				"OurProductCode": {
+					"type": "null"
+				},
+				"ThirdPartyInvoiceDate": {
+					"type": "string"
+				},
+				"DiscountId": {
+					"type": "null"
+				},
+				"@metadata": {
+					"type": "object",
+					"properties": {
+						"Raven-Entity-Name": {
+							"type": "string"
+						},
+						"Raven-Clr-Type": {
+							"type": "string"
+						},
+						"@id": {
+							"type": "string"
+						},
+						"Last-Modified": {
+							"type": "string"
+						},
+						"Raven-Last-Modified": {
+							"type": "string"
+						},
+						"@etag": {
+							"type": "string"
+						},
+						"Non-Authoritative-Information": {
+							"type": "boolean"
+						}
+					}
+				}
+			}
+		}
+	}
+}
