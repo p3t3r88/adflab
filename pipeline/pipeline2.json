@@ -1,0 +1,316 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "http://localhost:50000/databases/ProTeria.Invoicing/docs?collection=Orders",
+					"connectVia": {
+						"referenceName": "PTSQLSVR",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET"
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['$id']"
+								},
+								"sink": {
+									"name": "$id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['cachedHashcode']"
+								},
+								"sink": {
+									"name": "cachedHashcode"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TimeStamp']"
+								},
+								"sink": {
+									"name": "TimeStamp"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Type']"
+								},
+								"sink": {
+									"name": "Type"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Description']"
+								},
+								"sink": {
+									"name": "Description"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Change']"
+								},
+								"sink": {
+									"name": "Change"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Amount']"
+								},
+								"sink": {
+									"name": "Amount"
+								}
+							},
+							{
+								"source": {
+									"path": "$['AmountWithoutVAT']"
+								},
+								"sink": {
+									"name": "AmountWithoutVAT"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ListPriceWithoutVAT']"
+								},
+								"sink": {
+									"name": "ListPriceWithoutVAT"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Discount']"
+								},
+								"sink": {
+									"name": "Discount"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DiscountPercentage']"
+								},
+								"sink": {
+									"name": "DiscountPercentage"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DicountPercentageAtCarrier']"
+								},
+								"sink": {
+									"name": "DicountPercentageAtCarrier"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DiscountedNetAmountAtCarrier']"
+								},
+								"sink": {
+									"name": "DiscountedNetAmountAtCarrier"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ThirdPartyRef']"
+								},
+								"sink": {
+									"name": "ThirdPartyRef"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ThirdPartyRef2']"
+								},
+								"sink": {
+									"name": "ThirdPartyRef2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CurrencyCode']"
+								},
+								"sink": {
+									"name": "CurrencyCode"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ArticleNumber']"
+								},
+								"sink": {
+									"name": "ArticleNumber"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProductCode']"
+								},
+								"sink": {
+									"name": "ProductCode"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ThirdPartyRegTime']"
+								},
+								"sink": {
+									"name": "ThirdPartyRegTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProTeriaCustomerId']"
+								},
+								"sink": {
+									"name": "ProTeriaCustomerId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ThirdPartyInvoiceNo']"
+								},
+								"sink": {
+									"name": "ThirdPartyInvoiceNo"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PartnerAmount']"
+								},
+								"sink": {
+									"name": "PartnerAmount"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PartnerAmountWithoutVAT']"
+								},
+								"sink": {
+									"name": "PartnerAmountWithoutVAT"
+								}
+							},
+							{
+								"source": {
+									"path": "$['UsingCalcPrice']"
+								},
+								"sink": {
+									"name": "UsingCalcPrice"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OurId']"
+								},
+								"sink": {
+									"name": "OurId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OurId2']"
+								},
+								"sink": {
+									"name": "OurId2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OurProductCode']"
+								},
+								"sink": {
+									"name": "OurProductCode"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ThirdPartyInvoiceDate']"
+								},
+								"sink": {
+									"name": "ThirdPartyInvoiceDate"
+								}
+							},
+							{
+								"source": {
+									"path": "$['DiscountId']"
+								},
+								"sink": {
+									"name": "DiscountId"
+								}
+							}
+						],
+						"mapComplexValuesToString": false
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Prot_Orders_API",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
