@@ -1,0 +1,17 @@
+{
+	"name": "DestinationDataset_vvy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PT_BLOB_LabEnv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "staging"
+			}
+		}
+	}
+}
