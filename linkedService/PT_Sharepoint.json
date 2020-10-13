@@ -5,11 +5,11 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://crayon-my.sharepoint.com/personal/peter_tham_crayon_com/",
+			"url": "https://crayon-my.sharepoint.com/personal/peter_tham_crayon_com/Competency.xlsx",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Windows",
 			"userName": "peter.tham@crayon.com",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIlBULURBVEFGQUNUT1JZTEFCXzYyNzYwNDI0LTJmOWItNDU0NS1hNWU4LThjM2U2MjZjNTVlNCINCn0="
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIlBULURBVEFGQUNUT1JZTEFCX2E3OThkMjZlLTJkYmYtNDJjNS1hNWFjLTViODkzYzdjZDVhMyINCn0="
 		}
 	}
 }
